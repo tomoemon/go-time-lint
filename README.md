@@ -38,3 +38,23 @@ go get -u github.com/tomoemon/go-time-lint
 ```
 timelint ./...
 ```
+
+# Not implemented yet
+
+## Calling method assigned to a variable
+
+timelint cannot detect calling methods without In() if they are called after being assigned to a variable.
+
+```go
+day := time.Now().Day
+fmt.Println(day())
+```
+
+## Timezone specified variable
+
+Even if the timezone is explicitly specified in the same function, it will raise the report unless it is specified immediately before.
+
+```go
+utcTime := time.Now().In(time.UTC)
+fmt.Println(utcTime.Day())
+```
