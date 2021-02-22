@@ -36,8 +36,6 @@ func isTimeMethod(pass *analysis.Pass, ident *ast.Ident, name ...string) bool {
 }
 
 func run(pass *analysis.Pass) (interface{}, error) {
-	inspect := pass.ResultOf[inspect.Analyzer].(*inspector.Inspector)
-
 	targetTimeMethods := []string{
 		"AppendFormat",
 		"Clock",
@@ -46,13 +44,16 @@ func run(pass *analysis.Pass) (interface{}, error) {
 		"Format",
 		"Hour",
 		"ISOWeek",
+		"Minute",
 		"Month",
+		"Second",
 		"Weekday",
 		"Year",
 		"YearDay",
 	}
 
-	inspect.Preorder([]ast.Node{
+	ins := pass.ResultOf[inspect.Analyzer].(*inspector.Inspector)
+	ins.Preorder([]ast.Node{
 		(*ast.SelectorExpr)(nil),
 	}, func(node ast.Node) {
 		sel := node.(*ast.SelectorExpr)
